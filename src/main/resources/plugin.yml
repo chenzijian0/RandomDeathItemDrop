@@ -1,0 +1,5 @@
+name: TestPlugin
+main: SimpleTest
+author: JusticeKn
+version: 1.0
+description: This is my Plugin Test
