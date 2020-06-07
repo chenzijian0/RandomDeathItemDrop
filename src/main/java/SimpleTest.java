@@ -1,5 +1,6 @@
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,9 +27,6 @@ public class SimpleTest extends JavaPlugin implements Listener
         Random random = new Random();
         Set<Integer> itemStacksIndex  = new LinkedHashSet<Integer>();
         Location location = e.getEntity().getLocation();
-        String name = e.getEntity().getName();
-        String itemName;
-        String itemAmount;
         if (e.getEntity() instanceof Player)
         {
             e.getEntity().sendMessage("傻瓜你死掉了");
@@ -54,6 +52,7 @@ public class SimpleTest extends JavaPlugin implements Listener
             while (iterator.hasNext())
             {
                 temp = iterator.next();
+                ((Player) e.getEntity()).getWorld().dropItemNaturally(location, contents[temp]);
                 e.getEntity().sendMessage("丢失了: "+contents[temp].getType().name() + "  数量: "+ contents[temp].getAmount());
                 contents[temp].setAmount(0);
             }
