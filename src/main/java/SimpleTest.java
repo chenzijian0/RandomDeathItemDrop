@@ -25,39 +25,48 @@ public class SimpleTest extends JavaPlugin implements Listener
     {
         int temp;
         Random random = new Random();
-        Set<Integer> itemStacksIndex  = new LinkedHashSet<Integer>();
+        int numberLost = random.nextInt(10) + 1;
+        Set<Integer> itemStacksIndex = new LinkedHashSet<Integer>();
         Location location = e.getEntity().getLocation();
+        Player player;
         if (e.getEntity() instanceof Player)
         {
-            e.getEntity().sendMessage("傻瓜你死掉了");
-            Inventory playerInventory = ((Player) e.getEntity()).getInventory();
+            player = (Player) e.getEntity();
+            player.sendMessage("嗷...你死掉了");
+            Inventory playerInventory = player.getInventory();
             ItemStack[] contents = playerInventory.getContents();
             for (int i = 0; i < contents.length; i++)
             {
-                if(contents[i]!=null)
+                if (contents[i] != null)
                 {
                     itemStacksIndex.add(i);
                 }
             }
-            if (itemStacksIndex.isEmpty())
-                return;
+            if (itemStacksIndex.isEmpty()) return;
             Set<Integer> size = new LinkedHashSet<Integer>();
-            while (size.size() < random.nextInt(10)+1)
+            while (size.size() < numberLost && size.size() < itemStacksIndex.size())
             {
                 int randomNum = random.nextInt(41);
-                if(itemStacksIndex.contains(randomNum))
-                size.add(randomNum);
+                if (itemStacksIndex.contains(randomNum)) size.add(randomNum);
             }
             Iterator<Integer> iterator = size.iterator();
             while (iterator.hasNext())
             {
                 temp = iterator.next();
-                ((Player) e.getEntity()).getWorld().dropItemNaturally(location, contents[temp]);
-                e.getEntity().sendMessage("丢失了: "+contents[temp].getType().name() + "  数量: "+ contents[temp].getAmount());
+                player.getWorld().dropItemNaturally(location, contents[temp]);
+                player.sendMessage("丢失了: " + contents[temp].getType().name() + "  数量: " + contents[temp].getAmount());
                 contents[temp].setAmount(0);
             }
             size.clear();
             itemStacksIndex.clear();
+            if (player.getTotalExperience() - 500 >= 0)
+            {
+                player.setTotalExperience(player.getTotalExperience() - 500);
+            }
+            else
+            {
+                player.setTotalExperience(0);
+            }
         }
 
     }
