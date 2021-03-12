@@ -25,7 +25,7 @@ public class SimpleTest extends JavaPlugin implements Listener
     {
         int temp;
         Random random = new Random();
-        int numberLost = random.nextInt(10) + 1;
+        int numberLost = random.nextInt(15) + 1;
         Set<Integer> itemStacksIndex = new LinkedHashSet<Integer>();
         Location location = e.getEntity().getLocation();
         Player player;
@@ -33,6 +33,15 @@ public class SimpleTest extends JavaPlugin implements Listener
         {
             player = (Player) e.getEntity();
             player.sendMessage("嗷...你死掉了");
+            player.sendMessage("扣除10级经验");
+            if(player.getLevel() >=10)
+            {
+                player.setLevel(player.getLevel()-10);
+            }
+            else
+            {
+                player.setLevel(0);
+            }
             Inventory playerInventory = player.getInventory();
             ItemStack[] contents = playerInventory.getContents();
             for (int i = 0; i < contents.length; i++)
@@ -59,14 +68,7 @@ public class SimpleTest extends JavaPlugin implements Listener
             }
             size.clear();
             itemStacksIndex.clear();
-            if (player.getTotalExperience() - 500 >= 0)
-            {
-                player.setTotalExperience(player.getTotalExperience() - 500);
-            }
-            else
-            {
-                player.setTotalExperience(0);
-            }
+
         }
 
     }
